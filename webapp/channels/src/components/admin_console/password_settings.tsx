@@ -10,11 +10,39 @@ import {t} from 'utils/i18n';
 
 import AdminSettings from './admin_settings';
 import Setting from './setting';
-import SettingsGroup from './settings_group.jsx';
+import SettingsGroup from './settings_group';
 import TextSetting from './text_setting';
 
-export default class PasswordSettings extends AdminSettings {
-    constructor(props) {
+type Props = {
+  config: {
+    PasswordSettings: {
+      MinimumLength: number;
+      Lowercase: boolean;
+      Number: boolean;
+      Uppercase: boolean;
+      Symbol: boolean;
+    };
+    ServiceSettings: {
+      MaximumLoginAttempts: number;
+    };
+    ExperimentalSettings?: {
+      RestrictSystemAdmin: boolean;
+    };
+  };
+  isDisabled: boolean;
+}
+
+type State = {
+  passwordMinimumLength: number;
+  passwordLowercase: boolean;
+  passwordNumber: boolean;
+  passwordUppercase: boolean;
+  passwordSymbol: boolean;
+  maximumLoginAttempts: number;
+}
+
+export default class PasswordSettings extends AdminSettings<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         this.state = Object.assign(this.state, {
